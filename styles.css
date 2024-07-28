@@ -1,132 +1,171 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
   font-family: Arial, sans-serif;
   display: flex;
+  flex-direction: column; /* Ensure content flows vertically */
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #282c34;
-  color: #ffffff;
-  padding: 20px;
+  align-items: center; /* Center items vertically */
+  min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+  margin: 0;
+  background: linear-gradient(135deg, #a2c2e4, #f2f2f2);
+  padding: 20px 0; /* Add padding to the top and bottom */
+  box-sizing: border-box;
+  overflow-y: auto; /* Add vertical scroll if necessary */
 }
 
 .arena {
   text-align: center;
-  border: 2px solid #61dafb;
-  padding: 20px;
-  background: #20232a;
+  background: linear-gradient(135deg, #ffffff, #e0e0e0);
+  padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 0 20px rgba(97, 218, 251, 0.5);
-  width: 600px;
-  max-width: 100%;
-  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 1000px;
+  margin-bottom: 20px;
+}
+
+#message {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .player {
-  margin: 20px 0;
+  text-align: center;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.player h2 {
-  margin-bottom: 15px;
-  color: #61dafb;
-  font-size: 2em;
+.dice-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
-.player p {
-  margin: 10px 0;
-  font-size: 1.4em;
+.dice-wrapper {
+  margin: 5px;
+}
+
+.dice {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  margin: 5px;
+  transition: transform 0.2s;
+}
+
+.dice:hover {
+  transform: scale(1.1);
+}
+
+.dice-label {
+  text-align: center;
+  font-weight: bold;
 }
 
 .controls {
-  margin-top: 30px;
-}
-
-button {
-  padding: 15px 30px;
-  font-size: 1.2em;
-  margin: 15px;
-  border: none;
-  border-radius: 5px;
-  background-color: #61dafb;
-  color: #20232a;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #21a1f1;
+  width: 100%;
+  max-width: 1000px;
 }
 
 .customize {
   margin-top: 30px;
-  text-align: left;
-}
-
-.customize h3 {
-  color: #61dafb;
-  font-size: 1.6em;
-  margin-bottom: 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #fefefe, #e9f5ff);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .customize div {
   margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  padding: 10px;
+  border-radius: 8px;
 }
 
 .customize label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 1.2em;
+  margin-right: 10px;
+  font-weight: bold;
+  color: #333;
 }
 
 .customize input {
-  width: 100%;
-  padding: 10px;
-  font-size: 1.2em;
+  width: 80px;
+  padding: 5px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  text-align: center;
+  transition: border-color 0.3s;
 }
 
-#message {
-  margin-top: 30px;
-  font-size: 1.4em;
-  color: #61dafb;
-  min-height: 50px;
+.customize input:focus {
+  border-color: #6b73ff;
 }
 
-@media (max-width: 768px) {
-  .arena {
-    width: 90%;
-    padding: 20px;
+button {
+  padding: 12px 25px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #ff6f61, #de4a7b);
+  color: white;
+  transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #e65c5c, #d83f5a);
+  transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+  .player {
+    width: 100%;
   }
 
-  .player h2 {
-    font-size: 1.5em;
+  .customize {
+    text-align: center;
   }
 
-  .player p {
-    font-size: 1.2em;
+  .customize div {
+    flex-direction: column;
+  }
+
+  .customize label, .customize input {
+    margin: 5px;
+  }
+
+  .dice {
+    width: 50px;
+    height: 50px;
+  }
+
+  #message {
+    font-size: 18px;
   }
 
   button {
     padding: 10px 20px;
-    font-size: 1em;
+    font-size: 14px;
   }
+}
 
-  .customize h3 {
-    font-size: 1.4em;
-  }
+.center-button {
+  display: block;
+  margin: 0 auto;
+}
 
-  .customize label,
-  .customize input {
-    font-size: 1em;
-  }
-
-  #message {
-    font-size: 1.2em;
-  }
+.reduction-message {
+  display: none;
+  color: red;
+  font-weight: bold;
 }

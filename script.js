@@ -4,6 +4,8 @@ class Player {
     this.health = health;
     this.strength = strength;
     this.attack = attack;
+    this.attackRoll = 0;
+    this.defenseRoll = 0;
   }
 
   rollDie() {
@@ -16,7 +18,8 @@ function updateHealth(player, elementId) {
 }
 
 function logMessage(message) {
-  document.getElementById('message').textContent = message;
+  const messageElement = document.getElementById('message');
+  messageElement.textContent = message;
 }
 
 function updateStats() {
@@ -37,40 +40,154 @@ function updateStats() {
   document.getElementById('attackB').textContent = playerB.attack;
 }
 
+function playSound(soundId) {
+  const sound = document.getElementById(soundId);
+  sound.currentTime = 0; // Rewind to the start
+  sound.play();
+}
+
 const playerA = new Player('Player A', 50, 5, 10);
 const playerB = new Player('Player B', 100, 10, 5);
 
+let currentTurn = 'attack'; // Tracks the current turn state
+let currentAttacker = playerA;
+let currentDefender = playerB;
+
 document.getElementById('startMatch').addEventListener('click', () => {
-  let attacker = playerA.health <= playerB.health ? playerA : playerB;
-  let defender = attacker === playerA ? playerB : playerA;
+  resetDiceImages();
+  currentTurn = 'attack';
+  currentAttacker = playerA.health <= playerB.health ? playerA : playerB;
+  currentDefender = currentAttacker === playerA ? playerB : playerA;
 
-  const interval = setInterval(() => {
-    if (playerA.health > 0 && playerB.health > 0) {
-      let attackRoll = attacker.rollDie();
-      let defendRoll = defender.rollDie();
+  enableDice(currentAttacker, 'attack');
+  disableDice(currentDefender);
 
-      let attackDamage = attacker.attack * attackRoll;
-      let defense = defender.strength * defendRoll;
-      let damage = attackDamage - defense;
+  logMessage(`${currentAttacker.name} attacks first!`);
+});
 
-      if (damage > 0) {
-        defender.health -= damage;
-        if (defender.health < 0) defender.health = 0;
-      }
+document.getElementById('attackDiceA').addEventListener('click', () => {
+  if (currentTurn === 'attack' && currentAttacker === playerA) {
+    playSound('rollSound'); // Play sound
+    playerA.attackRoll = playerA.rollDie();
+    logMessage(`Player A rolls attack dice: ${playerA.attackRoll}`);
+    displayDiceRoll('attackDiceA', playerA.attackRoll);
+    disableDice(playerA);
+    enableDice(playerB, 'defense');
+    currentTurn = 'defense';
+  }
+});
 
-      updateHealth(playerA, 'healthA');
-      updateHealth(playerB, 'healthB');
+document.getElementById('defenseDiceA').addEventListener('click', () => {
+  if (currentTurn === 'defense' && currentDefender === playerA) {
+    playSound('rollSound'); // Play sound
+    playerA.defenseRoll = playerA.rollDie();
+    logMessage(`Player A rolls defense dice: ${playerA.defenseRoll}`);
+    displayDiceRoll('defenseDiceA', playerA.defenseRoll);
+    disableDice(playerA);
+    executeTurn();
+  }
+});
 
-      logMessage(`${attacker.name} attacks ${defender.name}! ${attacker.name} rolls ${attackRoll} and ${defender.name} rolls ${defendRoll}. ${defender.name} takes ${damage} damage.`);
+document.getElementById('attackDiceB').addEventListener('click', () => {
+  if (currentTurn === 'attack' && currentAttacker === playerB) {
+    playSound('rollSound'); // Play sound
+    playerB.attackRoll = playerB.rollDie();
+    logMessage(`Player B rolls attack dice: ${playerB.attackRoll}`);
+    displayDiceRoll('attackDiceB', playerB.attackRoll);
+    disableDice(playerB);
+    enableDice(playerA, 'defense');
+    currentTurn = 'defense';
+  }
+});
 
-      if (defender.health === 0) {
-        logMessage(`${defender.name} has been defeated! ${attacker.name} wins!`);
-        clearInterval(interval);
-      }
+document.getElementById('defenseDiceB').addEventListener('click', () => {
+  if (currentTurn === 'defense' && currentDefender === playerB) {
+    playSound('rollSound'); // Play sound
+    playerB.defenseRoll = playerB.rollDie();
+    logMessage(`Player B rolls defense dice: ${playerB.defenseRoll}`);
+    displayDiceRoll('defenseDiceB', playerB.defenseRoll);
+    disableDice(playerB);
+    executeTurn();
+  }
+});
 
-      [attacker, defender] = [defender, attacker];
-    }
-  }, 1000);
+function displayDiceRoll(diceId, rollResult) {
+  const diceImage = document.getElementById(diceId);
+  diceImage.src = `images/dice${rollResult}.png`;
+}
+
+function showReductionMessage(player, damage) {
+  const messageElement = document.getElementById(player === playerA ? 'reductionMessageA' : 'reductionMessageB');
+  if (damage > 0) {
+    messageElement.textContent = `-${damage} HP`;
+  } else {
+    messageElement.textContent = "No damage";
+  }
+  messageElement.style.display = 'block';
+
+  setTimeout(() => {
+    messageElement.style.display = 'none';
+  }, 2000); // Hide the message after 2 seconds
+}
+
+function executeTurn() {
+  let attackDamage = currentAttacker.attack * currentAttacker.attackRoll;
+  let defenseDamage = currentDefender.strength * currentDefender.defenseRoll;
+  let netDamage = attackDamage - defenseDamage;
+
+  if (netDamage > 0) {
+    currentDefender.health -= netDamage;
+    updateHealth(currentDefender, currentDefender === playerA ? 'healthA' : 'healthB');
+  }
+
+  showReductionMessage(currentDefender, netDamage);
+
+  logMessage(`${currentAttacker.name} dealt ${netDamage > 0 ? netDamage : 0} damage to ${currentDefender.name}`);
+
+  if (currentDefender.health <= 0) {
+    logMessage(`${currentDefender.name} is defeated! ${currentAttacker.name} wins!`);
+    disableDice(currentAttacker);
+    disableDice(currentDefender);
+    return;
+  }
+
+  currentTurn = 'attack';
+  [currentAttacker, currentDefender] = [currentDefender, currentAttacker];
+
+  enableDice(currentAttacker, 'attack');
+  disableDice(currentDefender);
+}
+
+function enableDice(player, type) {
+  const diceId = type === 'attack' ? 'attackDice' : 'defenseDice';
+  document.getElementById(`${diceId}${player === playerA ? 'A' : 'B'}`).classList.remove('disabled');
+}
+
+function disableDice(player) {
+  document.getElementById(`attackDice${player === playerA ? 'A' : 'B'}`).classList.add('disabled');
+  document.getElementById(`defenseDice${player === playerA ? 'A' : 'B'}`).classList.add('disabled');
+}
+
+function resetDiceImages() {
+  document.getElementById('attackDiceA').src = 'images/dice1.png';
+  document.getElementById('defenseDiceA').src = 'images/dice1.png';
+  document.getElementById('attackDiceB').src = 'images/dice1.png';
+  document.getElementById('defenseDiceB').src = 'images/dice1.png';
+}
+
+document.getElementById('toggleCustomize').addEventListener('click', () => {
+  const customizeDiv = document.getElementById('customizeDiv');
+  customizeDiv.style.display = customizeDiv.style.display === 'none' ? 'block' : 'none';
+
+  if (customizeDiv.style.display === 'block') {
+    customizeDiv.scrollIntoView({ behavior: 'smooth' });
+  }
 });
 
 document.getElementById('updateStats').addEventListener('click', updateStats);
+
+document.addEventListener('DOMContentLoaded', () => {
+  disableDice(playerA);
+  disableDice(playerB);
+  logMessage('Click "Start Match" to begin!');
+});
