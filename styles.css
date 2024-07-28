@@ -1,0 +1,132 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #282c34;
+  color: #ffffff;
+  padding: 20px;
+}
+
+.arena {
+  text-align: center;
+  border: 2px solid #61dafb;
+  padding: 20px;
+  background: #20232a;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(97, 218, 251, 0.5);
+  width: 600px;
+  max-width: 100%;
+  overflow-y: auto;
+}
+
+.player {
+  margin: 20px 0;
+}
+
+.player h2 {
+  margin-bottom: 15px;
+  color: #61dafb;
+  font-size: 2em;
+}
+
+.player p {
+  margin: 10px 0;
+  font-size: 1.4em;
+}
+
+.controls {
+  margin-top: 30px;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 1.2em;
+  margin: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #61dafb;
+  color: #20232a;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #21a1f1;
+}
+
+.customize {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.customize h3 {
+  color: #61dafb;
+  font-size: 1.6em;
+  margin-bottom: 20px;
+}
+
+.customize div {
+  margin-bottom: 15px;
+}
+
+.customize label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.2em;
+}
+
+.customize input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.2em;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#message {
+  margin-top: 30px;
+  font-size: 1.4em;
+  color: #61dafb;
+  min-height: 50px;
+}
+
+@media (max-width: 768px) {
+  .arena {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .player h2 {
+    font-size: 1.5em;
+  }
+
+  .player p {
+    font-size: 1.2em;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+
+  .customize h3 {
+    font-size: 1.4em;
+  }
+
+  .customize label,
+  .customize input {
+    font-size: 1em;
+  }
+
+  #message {
+    font-size: 1.2em;
+  }
+}
