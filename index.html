@@ -1,89 +1,123 @@
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Magical Arena</title>
-      <link rel="stylesheet" href="styles.css">
-      <style>
-          .disabled {
-            pointer-events: none;
-            opacity: 0.5;
-          }
-      </style>
-      </head>
-      <body>
-      <div id="message"></div>
-      <div class="arena">
-      <div class="player" id="playerA">
-          <h2>Player A</h2>
-          <div id="reductionMessageA" class="reduction-message"></div>
-          <p>Health: <span id="healthA">50</span></p>
-          <p>Strength: <span id="strengthA">5</span></p>
-          <p>Attack: <span id="attackA">10</span></p>
-          <div class="dice-container">
-              <div>
-                  <img src="images/dice1.png" alt="Attack Dice" class="dice disabled" id="attackDiceA"
-                       style="margin-right:30px;">
-                  <div class="dice-label" style="margin-right:30px;">Attack Dice</div>
-              </div>
-              <div>
-                  <img src="images/dice1.png" alt="Defense Dice" class="dice disabled" id="defenseDiceA">
-                  <div class="dice-label">Defense Dice</div>
-              </div>
-          </div>
-      </div>
-      <div class="player" id="playerB">
-          <h2>Player B</h2>
-          <div id="reductionMessageB" class="reduction-message"></div>
-          <p>Health: <span id="healthB">100</span></p>
-          <p>Strength: <span id="strengthB">10</span></p>
-          <p>Attack: <span id="attackB">5</span></p>
-          <div class="dice-container">
-              <div>
-                  <img src="images/dice1.png" alt="Attack Dice" class="dice disabled" id="attackDiceB"
-                       style="margin-right:30px;">
-                  <div class="dice-label" style="margin-right:30px;">Attack Dice</div>
-              </div>
-              <div>
-                  <img src="images/dice1.png" alt="Defense Dice" class="dice disabled" id="defenseDiceB">
-                  <div class="dice-label">Defense Dice</div>
-              </div>
-          </div>
-      </div>
-      </div>
-      <div class="controls">
-      <button id="startMatch" class="center-button">Start Match</button>
-      <button id="toggleCustomize" class="center-button" style="margin-top:40px;">Customize</button>
-      <div class="customize" id="customizeDiv" style="display: none;">
-          <div>
-              <label for="healthAInput">Player A Health:</label>
-              <input type="number" id="healthAInput" value="50">
-          </div>
-          <div>
-              <label for="strengthAInput">Player A Strength:</label>
-              <input type="number" id="strengthAInput" value="5">
-          </div>
-          <div>
-              <label for="attackAInput">Player A Attack:</label>
-              <input type="number" id="attackAInput" value="10">
-          </div>
-          <div>
-              <label for="healthBInput">Player B Health:</label>
-              <input type="number" id="healthBInput" value="100">
-          </div>
-          <div>
-              <label for="strengthBInput">Player B Strength:</label>
-              <input type="number" id="strengthBInput" value="10">
-          </div>
-          <div>
-              <label for="attackBInput">Player B Attack:</label>
-              <input type="number" id="attackBInput" value="5">
-          </div>
-          <button id="updateStats">Update Stats</button>
-      </div>
-      </div>
-      <audio id="rollSound" src="sounds/dice-sound.mp3"></audio>
-      <script src="script.js"></script>
-      </body>
-      </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magical Arena</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+    .disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+</style>
+</head>
+<body>
+<h1 class="animated-heading">Magical Arena</h1>
+<div id="message"></div>
+<div class="arena">
+    <div class="player" id="playerA">
+        <h2>Player A</h2>
+        <div id="reductionMessageA" class="reduction-message"></div>
+        <p>Health: <span id="healthA">50</span></p>
+        <p>Strength: <span id="strengthA">5</span></p>
+        <p>Attack: <span id="attackA">10</span></p>
+        <div class="dice-container">
+            <div>
+                <img src="images/dice1.png" alt="Attack Dice" class="dice disabled" id="attackDiceA" style="margin-right:30px;">
+                <div class="dice-label" style="margin-right:30px;">Attack Dice</div>
+            </div>
+            <div>
+                <img src="images/dice1.png" alt="Defense Dice" class="dice disabled" id="defenseDiceA">
+                <div class="dice-label">Defense Dice</div>
+            </div>
+        </div>
+    </div>
+    <div class="player" id="playerB">
+        <h2>Player B</h2>
+        <div id="reductionMessageB" class="reduction-message"></div>
+        <p>Health: <span id="healthB">50</span></p>
+        <p>Strength: <span id="strengthB">5</span></p>
+        <p>Attack: <span id="attackB">10</span></p>
+        <div class="dice-container">
+            <div>
+                <img src="images/dice1.png" alt="Attack Dice" class="dice disabled" id="attackDiceB" style="margin-right:30px;">
+                <div class="dice-label" style="margin-right:30px;">Attack Dice</div>
+            </div>
+            <div>
+                <img src="images/dice1.png" alt="Defense Dice" class="dice disabled" id="defenseDiceB">
+                <div class="dice-label">Defense Dice</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="controls">
+    <button id="startMatch" class="center-button">Start Match</button>
+    <button id="toggleCustomize" class="center-button" style="margin-top:40px;">Customize</button>
+    <div class="customize" id="customizeDiv" style="display: none;">
+        <div>
+            <label for="healthAInput">Player A Health:</label>
+            <input type="number" id="healthAInput" value="50">
+        </div>
+        <div>
+            <label for="strengthAInput">Player A Strength:</label>
+            <input type="number" id="strengthAInput" value="5">
+        </div>
+        <div>
+            <label for="attackAInput">Player A Attack:</label>
+            <input type="number" id="attackAInput" value="10">
+        </div>
+        <div>
+            <label for="healthBInput">Player B Health:</label>
+            <input type="number" id="healthBInput" value="50">
+        </div>
+        <div>
+            <label for="strengthBInput">Player B Strength:</label>
+            <input type="number" id="strengthBInput" value="5">
+        </div>
+        <div>
+            <label for="attackBInput">Player B Attack:</label>
+            <input type="number" id="attackBInput" value="10">
+        </div>
+        <button id="updateStats">Update Stats</button>
+    </div>
+    <button id="toggleInstructions" class="center-button" style="margin-top:20px;">How to Play Magical Arena</button>
+    <div class="instructions" id="instructionsDiv" style="display: none;">
+        <h2>How to Play Magical Arena</h2>
+        <p><strong>Objective:</strong> Reduce your opponent’s health to zero.</p>
+        <h3>Player Attributes</h3>
+        <ul>
+            <li><strong>Health:</strong> Life points; if it reaches zero, you lose.</li>
+            <li><strong>Strength:</strong> Determines defending power.</li>
+            <li><strong>Attack:</strong> Determines attacking power.</li>
+        </ul>
+        <h3>Game Setup</h3>
+        <ul>
+            <li><strong>Player A:</strong> 50 health, 5 strength, 10 attack.</li>
+            <li><strong>Player B:</strong> 50 health, 5 strength, 10 attack.</li>
+        </ul>
+        <h3>Gameplay</h3>
+        <ul>
+            <li><strong>Turn-Based Combat:</strong> Players attack in turns.</li>
+            <li><strong>Dice Rolls:</strong> Each player rolls a six-sided die.</li>
+            <li><strong>Attack Damage:</strong> Attack value * attack die roll.</li>
+            <li><strong>Defending Strength:</strong> Strength value * defense die roll.</li>
+            <li><strong>Health Reduction:</strong> Excess damage (Attack Damage - Defending Strength) reduces the defender’s health.</li>
+        </ul>
+        <h3>Example Turn</h3>
+        <p><strong>Player A attacks:</strong> Rolls 5. Player B defends: Rolls 2.</p>
+        <p>Attack Damage = 10 * 5 = 50</p>
+        <p>Defending Strength = 10 * 2 = 20</p>
+        <p>Player B’s health: 100 - (50 - 20) = 70</p>
+        <p><strong>Player B attacks:</strong> Rolls 4. Player A defends: Rolls 3.</p>
+        <p>Attack Damage = 5 * 4 = 20</p>
+        <p>Defending Strength = 5 * 3 = 15</p>
+        <p>Player A’s health: 50 - (20 - 15) = 45</p>
+        <h3>Winning the Game</h3>
+        <p>The game ends when a player's health reaches zero. The remaining player is the winner.</p>
+    </div>
+</div>
+<audio id="rollSound" src="sounds/dice-sound.mp3"></audio>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,6 +1,9 @@
 class Player {
   constructor(name, health, strength, attack) {
     this.name = name;
+    this.originalHealth = health;
+    this.originalStrength = strength;
+    this.originalAttack = attack;
     this.health = health;
     this.strength = strength;
     this.attack = attack;
@@ -10,6 +13,12 @@ class Player {
 
   rollDie() {
     return Math.floor(Math.random() * 6) + 1;
+  }
+
+  reset() {
+    this.health = this.originalHealth;
+    this.strength = this.originalStrength;
+    this.attack = this.originalAttack;
   }
 }
 
@@ -47,13 +56,25 @@ function playSound(soundId) {
 }
 
 const playerA = new Player('Player A', 50, 5, 10);
-const playerB = new Player('Player B', 100, 10, 5);
+const playerB = new Player('Player B', 50, 5,10);
 
 let currentTurn = 'attack'; // Tracks the current turn state
 let currentAttacker = playerA;
 let currentDefender = playerB;
 
+function resetStats() {
+  playerA.reset();
+  playerB.reset();
+  updateHealth(playerA, 'healthA');
+  document.getElementById('strengthA').textContent = playerA.strength;
+  document.getElementById('attackA').textContent = playerA.attack;
+  updateHealth(playerB, 'healthB');
+  document.getElementById('strengthB').textContent = playerB.strength;
+  document.getElementById('attackB').textContent = playerB.attack;
+}
+
 document.getElementById('startMatch').addEventListener('click', () => {
+  resetStats(); // Reset stats when starting a new match
   resetDiceImages();
   currentTurn = 'attack';
   currentAttacker = playerA.health <= playerB.health ? playerA : playerB;
@@ -186,8 +207,11 @@ document.getElementById('toggleCustomize').addEventListener('click', () => {
 
 document.getElementById('updateStats').addEventListener('click', updateStats);
 
-document.addEventListener('DOMContentLoaded', () => {
-  disableDice(playerA);
-  disableDice(playerB);
-  logMessage('Click "Start Match" to begin!');
+document.getElementById('toggleInstructions').addEventListener('click', () => {
+    const instructionsDiv = document.getElementById('instructionsDiv');
+    instructionsDiv.style.display = instructionsDiv.style.display === 'none' ? 'block' : 'none';
+
+    if (instructionsDiv.style.display === 'block') {
+        instructionsDiv.scrollIntoView({ behavior: 'smooth' });
+    }
 });
